@@ -1,0 +1,105 @@
+
+        body {
+            margin: 0;
+      background-image: url(https://cutewallpaper.org/21/free-hd-wallpapers-1920-x-1080/72+-Hd-Backgrounds-1080p-Free-on-WallpaperSafari.jpg);
+            font-family: 'Open Sans',sans-serif;
+      color: white;
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: table;
+        }
+
+        #activity {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #activity:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 20vh;
+        }
+        #activity:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 20vh;
+        }
+
+        #result {
+            text-transform: uppercase;
+        }
+
+        .tryagain {
+    position: absolute;
+        background-attachment: scroll;
+        background-clip: border-box;
+    background-color: rgba(220, 220, 220, 0.3);
+      border-style: solid;
+        background-image: none;
+        background-origin: padding-box;
+        background-size: auto;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        box-sizing: border-box;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        display: inline-block;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 32px;
+        font-stretch: normal;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        height: 93px;
+        line-height: normal;
+        margin-bottom: 8px;
+        margin-left: 9.28px;
+        margin-right: 9.28px;
+        margin-top: 8px;
+        min-height: 0px;
+        min-width: 208px;
+        outline-width: 0px;
+        padding-bottom: 24px;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-top: 24px;
+        position: relative;
+        text-align: center;
+        text-transform: none;
+        transition-delay: 0s;
+        transition-duration: 0.28s;
+        transition-property: box-shadow;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        width: 351.594px;
+        z-index: 0;
+        -webkit-user-select: none;
+        }
+
+        a:link, a:hover, a:visited, a:active {
+            text-decoration: none;
+        }
+.hits {
+  font-size: 2em;
+  font-weight: bolder;
+}
+.chat {
+     position:absolute;
+     right: 0px;
+     z-index: 9999;
+     width: 40;
+     height: 20;
+     color: white;
+     text- underlined;
+}
+
