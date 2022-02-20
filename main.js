@@ -34,7 +34,7 @@ var Snake = /** @class */ (function () {
                 this.alive = false;
             }
         }
-        else if (this.direction == 2) {
+        else if (this.direction === 2) {
             if (y > 0) {
                 this.arr.push(x + (y - 1) * 25);
             }
@@ -42,7 +42,7 @@ var Snake = /** @class */ (function () {
                 this.alive = false;
             }
         }
-        else if (this.direction == 3) {
+        else if (this.direction === 3) {
             if (y + 1 < 25) {
                 this.arr.push(x + (y + 1) * 25);
             }
@@ -71,29 +71,24 @@ var Snake = /** @class */ (function () {
 initCanvas();
 var board = [0];
 var snake = new Snake([255, 256, 257], 1);
+var empty = function () { };
+var execute = empty;
 for (var x = 1; x !== 500; x++) {
     board[x] = 0;
 }
 board = snake.populate(board);
 drawBoard();
 var inter = setInterval(update, 67);
-document.addEventListener("keydown", function (event) {
-    if (event.key === "w" && snake.direction !== 3) {
-        snake.direction = 2;
-    }
-    else if (event.key === "a" && snake.direction !== 1) {
-        snake.direction = 0;
-    }
-    else if (event.key === "s" && snake.direction !== 2) {
-        snake.direction = 3;
-    }
-    else if (event.key === "d" && snake.direction !== 0) {
-        snake.direction = 1;
-    }
-    else if (event.key === "r") {
+document.addEventListener("keydown", keyinput);
+var keys = [];
+function keyinput(event) {
+    var ind = ["a", "d", "w", "s"].indexOf(event.key);
+    if (event.key === "r") {
         initCanvas();
         board = [0];
         snake = new Snake([255, 256, 256], 1);
+        keys = [];
+        execute = empty;
         for (var x = 1; x !== 500; x++) {
             board[x] = 0;
         }
@@ -101,12 +96,51 @@ document.addEventListener("keydown", function (event) {
         clearInterval(inter);
         inter = setInterval(update, 67);
     }
-});
+    else if (keys.length < 2 &&
+        keys.every(function (s) { return s !== ind; }) && execute === empty && ind != -1) {
+        keys.push(ind);
+    }
+}
 function initCanvas() {
     context.fillStyle = "black";
     context.fillRect(0, 0, 1000, 1000);
 }
+function movement() {
+    if (keys.length == 0) {
+        return;
+    }
+    move(snake.direction);
+}
+function move(direction) {
+    if (keys.length === 1 && keys[0] !== [1, 0, 3, 2][snake.direction]) {
+        snake.direction = keys[0];
+    }
+    else if (keys.length === 2) {
+        if (snake.direction === keys[1] || snake.direction === keys[0]) {
+            snake.direction = keys[0];
+        }
+        else if (keys[0] === [1, 0, 3, 2][snake.direction] || keys[0] === snake.direction) {
+            snake.direction = keys[1];
+            execute = function () {
+                keys = [keys[0]];
+                execute = empty;
+            };
+            return;
+        }
+        else {
+            snake.direction = keys[0];
+            execute = function () {
+                keys = [keys[1]];
+                execute = empty;
+            };
+            return;
+        }
+    }
+    keys = [];
+}
 function update() {
+    execute();
+    movement();
     snake.tick(board);
     if (!snake.alive) {
         context.fillStyle = "red";
@@ -121,26 +155,16 @@ function update() {
     drawBoard();
 }
 function GenApple() {
-    for (var i = 0; i != board.length; i++) {
-        if (board[i] == 2) {
-            return i;
-        }
+    if (board.indexOf(2) != -1) {
+        return board.indexOf(2);
     }
     var b2 = snake.populate(board);
-    for (var i = 0; i != board.length; i++) {
-        if (b2[i] == 1) {
-            b2[i] = -1;
+    b2.forEach(function (x) {
+        if (x == 1) {
+            b2.splice(b2.indexOf(1), 1);
         }
-        else {
-            b2[i] = i;
-        }
-    }
-    for (var i = 0; i != board.length; i++) {
-        if (b2[i] == -1) {
-            b2.splice(i, 1);
-        }
-    }
-    return b2[Math.floor(Math.random() * b2.length)];
+    });
+    return Math.floor(b2.length * Math.random()) - 1;
 }
 // 0 -> black
 // 1 -> lime
