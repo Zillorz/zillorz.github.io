@@ -10,10 +10,13 @@ class Snake {
     direction = 3
     alive = true
 
+    score = 0
+
     // 0 -> tail, -1 -> head
     arr = Array<number>();
 
     constructor(body: Array<number>, dir: number) {
+        this.score = body.length
         body.forEach((x: number) => {
             this.arr.push(x)
         })
@@ -60,6 +63,8 @@ class Snake {
 
         if (board[this.arr[this.arr.length - 1]] !== 2) {
             this.arr.splice(0, 1)
+        } else {
+            this.score++
         }
         // this.arr[this.arr.length - 1]
         if (this.arr.indexOf(this.arr[this.arr.length - 1]) !== this.arr.length - 1) {
@@ -94,6 +99,7 @@ function keyinput(event: KeyboardEvent){
         execute = empty
         for (let x = 1; x !== 500; x++) { board[x] = 0 }
         drawBoard()
+        drawScore()
         clearInterval(inter)
         inter = setInterval(update, 67)
     } else if(keys.length < 2 && 
@@ -102,7 +108,6 @@ function keyinput(event: KeyboardEvent){
         keys.push(ind)
     }
 }
-
 
 function initCanvas() {
     context.fillStyle = "black"
@@ -150,9 +155,10 @@ function update() {
     execute()
     movement()
     snake.tick(board)
-    if(!snake.alive){
+    if(!snake.alive) {
         context.fillStyle = "red";
-        context.fillText("Game Over!", 400, 400, 500)
+        context.font = "40px sans-serif"
+        context.fillText("Game Over!", 400, 500, 500)
         clearInterval(inter)
         return
     }
@@ -161,10 +167,11 @@ function update() {
     board[g] = 2;
     board = snake.populate(board)
     drawBoard()
+    drawScore()
 }
 
 function GenApple() {
-    if (board.indexOf(2) != -1){
+    if (board.indexOf(2) !== -1){
         return board.indexOf(2)
     }
     
@@ -175,7 +182,13 @@ function GenApple() {
         }
     })
 
-    return Math.floor(b2.length * Math.random()) - 1
+    return Math.floor(b2.length * Math.random())
+}
+
+function drawScore() {
+    context.fillStyle = "lime"
+    context.font = "20px sans-serif"
+    context.fillText("Score: " + snake.score, 825, 25)
 }
 
 // 0 -> black

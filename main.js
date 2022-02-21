@@ -9,8 +9,10 @@ var Snake = /** @class */ (function () {
         // 3 -> down
         this.direction = 3;
         this.alive = true;
+        this.score = 0;
         // 0 -> tail, -1 -> head
         this.arr = Array();
+        this.score = body.length;
         body.forEach(function (x) {
             _this.arr.push(x);
         });
@@ -61,6 +63,9 @@ var Snake = /** @class */ (function () {
         if (board[this.arr[this.arr.length - 1]] !== 2) {
             this.arr.splice(0, 1);
         }
+        else {
+            this.score++;
+        }
         // this.arr[this.arr.length - 1]
         if (this.arr.indexOf(this.arr[this.arr.length - 1]) !== this.arr.length - 1) {
             this.alive = false;
@@ -78,7 +83,7 @@ for (var x = 1; x !== 500; x++) {
 }
 board = snake.populate(board);
 drawBoard();
-var inter = setInterval(update, 67);
+var inter = setInterval(update, 1);
 document.addEventListener("keydown", keyinput);
 var keys = [];
 function keyinput(event) {
@@ -93,6 +98,7 @@ function keyinput(event) {
             board[x] = 0;
         }
         drawBoard();
+        drawScore();
         clearInterval(inter);
         inter = setInterval(update, 67);
     }
@@ -144,7 +150,8 @@ function update() {
     snake.tick(board);
     if (!snake.alive) {
         context.fillStyle = "red";
-        context.fillText("Game Over!", 400, 400, 500);
+        context.font = "40px sans-serif";
+        context.fillText("Game Over!", 400, 500, 500);
         clearInterval(inter);
         return;
     }
@@ -153,9 +160,10 @@ function update() {
     board[g] = 2;
     board = snake.populate(board);
     drawBoard();
+    drawScore();
 }
 function GenApple() {
-    if (board.indexOf(2) != -1) {
+    if (board.indexOf(2) !== -1) {
         return board.indexOf(2);
     }
     var b2 = snake.populate(board);
@@ -164,7 +172,12 @@ function GenApple() {
             b2.splice(b2.indexOf(1), 1);
         }
     });
-    return Math.floor(b2.length * Math.random()) - 1;
+    return Math.floor(b2.length * Math.random());
+}
+function drawScore() {
+    context.fillStyle = "lime";
+    context.font = "20px sans-serif";
+    context.fillText("Score: " + snake.score, 825, 25);
 }
 // 0 -> black
 // 1 -> lime
