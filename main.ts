@@ -25,7 +25,7 @@ class Snake {
 
     populate(b: Array<number>) {
         this.arr.forEach((a: number) => {
-            b[a] = 1
+            b[a] = 1 
         })
         return b
     }
@@ -79,12 +79,25 @@ let snake = new Snake([255, 256, 257], 1)
 
 const empty = () => {}
 
+let speed = 1000 / 15;
+
+(document.getElementById("speed") as HTMLInputElement).addEventListener(
+    'change', (e) => {
+        let fps = Number.parseInt((e.target as HTMLInputElement).value);
+        console.log(fps)
+
+        if (Number.isFinite(fps)) {
+            speed = 1000 / fps;
+        }
+    }
+)
+
 let execute = empty
 for (let x = 1; x !== 500; x++) { board[x] = 0 }
 board = snake.populate(board)
 drawBoard()
 
-let inter = setInterval(update, 67)
+let inter = setInterval(update, speed)
 document.addEventListener("keydown", keyinput)
 
 let keys = []
@@ -101,7 +114,7 @@ function keyinput(event: KeyboardEvent){
         drawBoard()
         drawScore()
         clearInterval(inter)
-        inter = setInterval(update, 67)
+        inter = setInterval(update, speed)
     } else if(keys.length < 2 && 
         keys.every((s) => s !== ind) && execute === empty && ind != -1) {
 

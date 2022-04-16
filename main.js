@@ -77,13 +77,21 @@ initCanvas();
 var board = [0];
 var snake = new Snake([255, 256, 257], 1);
 var empty = function () { };
+var speed = 1000 / 15;
+document.getElementById("speed").addEventListener('change', function (e) {
+    var fps = Number.parseInt(e.target.value);
+    console.log(fps);
+    if (Number.isFinite(fps)) {
+        speed = 1000 / fps;
+    }
+});
 var execute = empty;
 for (var x = 1; x !== 500; x++) {
     board[x] = 0;
 }
 board = snake.populate(board);
 drawBoard();
-var inter = setInterval(update, 1);
+var inter = setInterval(update, speed);
 document.addEventListener("keydown", keyinput);
 var keys = [];
 function keyinput(event) {
@@ -100,7 +108,7 @@ function keyinput(event) {
         drawBoard();
         drawScore();
         clearInterval(inter);
-        inter = setInterval(update, 67);
+        inter = setInterval(update, speed);
     }
     else if (keys.length < 2 &&
         keys.every(function (s) { return s !== ind; }) && execute === empty && ind != -1) {
