@@ -3,3 +3,5 @@ Snake game by Zillorz, made in typscript (first project in ts)
 
 
 Website will probably be changed to something more interesting later.
+
+Website also includes pendulum motion simulator! (This is really cool!)
